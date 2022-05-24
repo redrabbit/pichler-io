@@ -19,6 +19,8 @@ class Client:
 	def __init__(self, home):
 		if sys.platform == 'win32':
 			library = 'nabto_client_api.dll'
+		elif sys.platform == 'darwin':
+			library = 'libnabto_client_api.dylib'
 		else:
 			library = 'libnabto_client_api.so'
 
