@@ -6,7 +6,7 @@ import pichler
 
 device = pichler.Pichler()
 
-print('Ping response: %s' % device.Ping())
+print('Ping response: %s' % device.ping())
 print('')
 
 print('Current temperature: %.2f C' % device.GetDatapoint('Temperature.Room'))

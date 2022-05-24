@@ -16,7 +16,7 @@ except:
 
 class Pichler:
 	"""
-	A class for accessing Pichler ventilation unit.
+	A class for accessing Pichler ventilation / heat-pump unit.
 	
 	It allows to read runtime parameters (datapoints) as well as to read/write unit's settings (setpoints).
 	"""
@@ -56,14 +56,14 @@ class Pichler:
 
 		self.device = device
 		self.client = nabto.Client(os.path.join(package_dir, '.home'))
-		self.session = self.client.OpenSession(user, passwd)
+		self.session = self.client.open_session(user, passwd)
 
 		with open(os.path.join(package_dir, 'unabto_queries.xml'), 'r') as file:
 		    rpc_xml = file.read()
 
-		self.session.RpcSetDefaultInterface(rpc_xml)
+		self.session.rpc_set_default_interface(rpc_xml)
 
-	def RpcInvoke(self, command, params):
+	def rpc_invoke(self, command, params):
 		"""
 		Invoke RPC command to device
 		
@@ -81,12 +81,12 @@ class Pichler:
 		dict
 			Response from device
 		"""
-		r = self.session.RpcInvoke('nabto://%s/%s.json?%s' % (self.device, command, params))
+		r = self.session.rpc_invoke('nabto://%s/%s.json?%s' % (self.device, command, params))
 		if r:
 			return r['response']
 		return []
 
-	def Ping(self):
+	def ping(self):
 		"""
 		Ping device and return its reponse
 		
@@ -95,9 +95,9 @@ class Pichler:
 		dict
 			Device's response to ping
 		"""
-		return self.RpcInvoke('ping', 'ping=1885957735')
+		return self.rpc_invoke('ping', 'ping=1885957735')
 
-	def DatapointRawReadValues(self, address, obj, length):
+	def datapoint_read_values(self, address, obj, length):
 		"""
 		Read raw values from one or more (neighboring) datapoints
 		
@@ -115,12 +115,12 @@ class Pichler:
 		list
 			List of raw values read from given address
 		"""
-		response = self.RpcInvoke('datapointReadValue', 'address=%d&obj=%d&length=%d' % (address, obj, length))
+		response = self.rpc_invoke('datapointReadValue', 'address=%d&obj=%d&length=%d' % (address, obj, length))
 		if response:
 			return [i['value'] for i in response['data']]
 		return []
 
-	def DatapointRawReadValue(self, address, obj=0):
+	def datapoint_read_value(self, address, obj=0):
 		"""
 		Read raw value from single datapoint
 		
@@ -136,9 +136,9 @@ class Pichler:
 		int
 			Raw value read from given address
 		"""
-		return self.DatapointRawReadValues(address, obj, 1)[0]
+		return self.datapoint_read_values(address, obj, 1)[0]
 
-	def DatapointRawReadListValues(self, lst):
+	def datapoint_read_list_values(self, lst):
 		"""
 		Read raw values from multiple datapoints
 		
@@ -154,12 +154,12 @@ class Pichler:
 		"""
 		l = [{'address': i[0], 'obj': i[1]} if type(i) is tuple else {'address': i, 'obj': 0} for i in lst]
 		request = {'request': {'list': l}}
-		response = self.RpcInvoke('datapointReadListValue', 'json=%s' % json.dumps(request))
+		response = self.rpc_invoke('datapointReadListValue', 'json=%s' % json.dumps(request))
 		if response:
 			return [i['value'] for i in response['data']]
 		return []
 
-	def SetpointRawReadValues(self, address, obj, length):
+	def setpoint_read_values(self, address, obj, length):
 		"""
 		Read raw values from one or more (neighboring) setpoints
 		
@@ -177,12 +177,12 @@ class Pichler:
 		list
 			List of raw values read from given address
 		"""
-		response = self.RpcInvoke('setpointReadValue', 'address=%d&obj=%d&length=%d' % (address, obj, length))
+		response = self.rpc_invoke('setpointReadValue', 'address=%d&obj=%d&length=%d' % (address, obj, length))
 		if response:
 			return [i['value'] for i in response['data']]
 		return []
 
-	def SetpointRawReadValue(self, address, obj=0):
+	def setpoint_read_value(self, address, obj=0):
 		"""
 		Read raw value from single setpoint
 		
@@ -198,9 +198,9 @@ class Pichler:
 		int
 			Raw value read from given address
 		"""
-		return self.SetpointRawReadValues(address, obj, 1)[0]
+		return self.setpoint_read_values(address, obj, 1)[0]
 
-	def SetpointRawReadListValues(self, lst):
+	def setpoint_read_list_values(self, lst):
 		"""
 		Read raw values from multiple setpoints
 		
@@ -216,7 +216,7 @@ class Pichler:
 		"""
 		l = [{'address': i[0], 'obj': i[1]} if type(i) is tuple else {'address': i, 'obj': 0} for i in lst]
 		request = {'request': {'list': l}}
-		response = self.RpcInvoke('setpointReadListValue', 'json=%s' % json.dumps(request))
+		response = self.rpc_invoke('setpointReadListValue', 'json=%s' % json.dumps(request))
 		if response:
 			return [i['value'] for i in response['data']]
 		return []

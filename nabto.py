@@ -36,7 +36,7 @@ class Client:
 		# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoShutdown(void);
 		self.client.nabtoShutdown()
 
-	def GetLocalDevices(self):
+	def get_local_devices(self):
 		"""
 		Enumerate local Nabto devices
 		
@@ -47,8 +47,8 @@ class Client:
 		"""
 		devices = pointer(c_char_p())
 		count = c_int(0)
-		# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoGetLocalDevices(char*** devices, int* numberOfDevices);
-		self.client.nabtoGetLocalDevices(pointer(devices), pointer(count))
+		# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoget_local_devices(char*** devices, int* numberOfDevices);
+		self.client.nabtoget_local_devices(pointer(devices), pointer(count))
 		if (count.value != 0):
 			return [devices.contents.value]
 
@@ -73,7 +73,7 @@ class Client:
 		# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoCreateProfile(const char* email, const char* password);
 		return self.client.nabtoCreateProfile(user.encode(), pwd.encode())
 
-	def OpenSession(self, user, pwd):
+	def open_session(self, user, pwd):
 		"""
 		Open session to device
 		
@@ -99,7 +99,7 @@ class Client:
 			self.client = client
 
 			session = c_void_p()
-			# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoOpenSession(nabto_handle_t* session, const char* id, const char* password);
+			# NABTO_DECL_PREFIX nabto_status_t NABTOAPI nabtoopen_session(nabto_handle_t* session, const char* id, const char* password);
 			status = self.client.nabtoOpenSession(pointer(session), user.encode(), pwd.encode())
 			if status == 5:
 				status = self.client.nabtoCreateProfile(user.encode(), pwd.encode())
@@ -116,7 +116,7 @@ class Client:
 		def __del__(self):
 			self.client.nabtoCloseSession(self.session)
 
-		def RpcSetDefaultInterface(self, interfaceDefinition):
+		def rpc_set_default_interface(self, interfaceDefinition):
 			"""
 			Assign RPC interface definition to session
 			
@@ -130,7 +130,7 @@ class Client:
 			if self.client.nabtoRpcSetDefaultInterface(self.session, interfaceDefinition.encode(), pointer(err)) != 0:
 				print('nabtoRpcSetDefaultInterface error: %s' % err)
 
-		def RpcInvoke(self, nabtoUrl):
+		def rpc_invoke(self, nabtoUrl):
 			"""
 			Invoke RPC command
 			
