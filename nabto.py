@@ -39,7 +39,7 @@ class Client:
 	def get_local_devices(self):
 		"""
 		Enumerate local Nabto devices
-		
+
 		Returns
 		-------
 		list
@@ -54,17 +54,17 @@ class Client:
 
 		return []
 
-	def CreateProfile(self, user, pwd):
+	def create_profile(self, user, pwd):
 		"""
 		Create profile that can be used to establish a session to device
-		
+
 		Parameters
 		----------
 		user : str
 			User name of account associated with device
 		pwd : str
 			Password for given account
-		
+
 		Returns
 		-------
 		int
@@ -76,14 +76,14 @@ class Client:
 	def open_session(self, user, pwd):
 		"""
 		Open session to device
-		
+
 		Parameters
 		----------
 		user : str
 			User name of account associated with device
 		pwd : str
 			Password for given account
-		
+
 		Returns
 		-------
 		Client.Session
@@ -119,7 +119,7 @@ class Client:
 		def rpc_set_default_interface(self, interfaceDefinition):
 			"""
 			Assign RPC interface definition to session
-			
+
 			Parameters
 			----------
 			interfaceDefinition : str
@@ -133,12 +133,12 @@ class Client:
 		def rpc_invoke(self, nabtoUrl):
 			"""
 			Invoke RPC command
-			
+
 			Parameters
 			----------
 			nabtoUrl : str
 				URL that contains RPC command along with command parameters
-			
+
 			Returns
 			-------
 			dict
