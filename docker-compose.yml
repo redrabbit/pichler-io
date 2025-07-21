@@ -1,0 +1,9 @@
+services:
+  pichler-io:
+    build: .
+    container_name: pichler-io
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+
+    restart: unless-stopped
