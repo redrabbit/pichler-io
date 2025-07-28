@@ -56,7 +56,7 @@ class RequestHander(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "Invalid JSON"}).encode())
 
 if __name__ == "__main__":
-    http_server = HTTPServer(("0.0.0.0", 8080), RequestHander)
+    http_server = HTTPServer(("0.0.0.0", 8000), RequestHander)
     try:
         http_server.serve_forever()
     except KeyboardInterrupt:

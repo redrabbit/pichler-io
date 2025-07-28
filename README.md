@@ -65,7 +65,7 @@ This should output current sensor readings like:
 python main.py
 ```
 
-The server will start on `http://localhost:8080`
+The server will start on `http://localhost:8000`
 
 ## Contributing
 

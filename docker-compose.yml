@@ -3,7 +3,7 @@ services:
     build: .
     container_name: pichler-io
     platform: linux/amd64
-    ports:
-      - "8080:8080"
-
     restart: unless-stopped
+    ports:
+      - "8000:8000"
+    network_mode: host
